@@ -1,0 +1,101 @@
+public static boolean isNumber(Character ch) {
+		if(ch.equals('0') || ch.equals('1') || ch.equals('2') || ch.equals('3') || ch.equals('4') || ch.equals('5') || ch.equals('6') || ch.equals('7') || ch.equals('8') || ch.equals('9')) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isSimbol(Character ch) {
+		if(ch.equals('+') || ch.equals('-') || ch.equals('*') || ch.equals('/') || ch.equals('^')) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isLeftP(Character ch) {
+		if(ch.equals('(')) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isRightP(Character ch) {
+		if(ch.equals(')')) {
+			return true;
+		}
+		return false;
+	}
+
+	public static int isHigherPrec(Character ch) {
+		int priority = 0;
+		switch(ch) {
+		case '^':
+			priority = 3;
+			break;
+		case '*':
+		case '/':
+			priority = 2;
+			break;
+		case '+':
+		case '-':
+			priority = 1;
+			break;
+		}
+		return priority;
+
+	}
+
+	public static List<Character> modify(String s) {
+		Queue<Character> charsQ = new LinkedList<Character>();
+		for (char c : s.toCharArray()) {
+			charsQ.offer(c);
+		}
+
+		Stack<Character> stk = new Stack<Character>();
+
+		List<Character> postFixed = new ArrayList<Character>();
+		//iteratorul este pe coada - pe forma initiala a ecuatiei
+		Iterator<Character>i = charsQ.iterator();
+		
+		while(i.hasNext()) {
+			Character ch = i.next();
+
+			if(isNumber(ch)) {
+				postFixed.add(ch);
+				System.out.println("ch: " + ch);
+			} else if (isSimbol(ch)) {
+				if(stk.size() > 1) {
+					System.out.println(".");
+					char op1 = stk.pop();
+					char op2 = stk.pop();
+					while(isSimbol(op2) && !isLeftP(op2) && (isHigherPrec(op1) < isHigherPrec(op2) || isHigherPrec(op1) == isHigherPrec(op2)) && op2 != '^') {
+						postFixed.add(op1);
+					}
+				}
+
+				stk.push(ch);
+				System.out.println(" ch din simbol: "  + ch);
+			} else if (isLeftP(ch)) {
+				stk.push(ch);
+			} else {
+				while(!stk.isEmpty() && !isLeftP(stk.peek())) {
+					postFixed.add(stk.pop());
+				}
+			}
+		}
+
+		while(!stk.isEmpty() && isSimbol(stk.peek())) {
+			if(isLeftP(stk.peek())) {
+				System.out.println("Expresia are paranteze gresite");
+			}
+			postFixed.add(stk.pop());
+		}
+
+		return postFixed;
+	}
+
+	public static <T> void afisare(Stack<T> ch) {
+		for(T ch1: ch) {
+			System.out.print(ch1 + " ");
+		}
+	}
