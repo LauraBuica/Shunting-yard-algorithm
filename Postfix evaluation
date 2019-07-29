@@ -1,0 +1,69 @@
+public static boolean isNumber(Character ch) {
+		if(ch.equals('0') || ch.equals('1') || ch.equals('2') || ch.equals('3') || ch.equals('4') || ch.equals('5') || ch.equals('6') || ch.equals('7') || ch.equals('8') || ch.equals('9')) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isSimbol(Character ch) {
+		if(ch.equals('+') || ch.equals('-') || ch.equals('*') || ch.equals('/') || ch.equals('^')) {
+			return true;
+		}
+		return false;
+	}
+
+	public static int mathResult(int op1, int op2, char operator) {
+		int result = 0;
+
+		switch(operator) {
+		case '+':
+			result = op1 + op2;
+			break;
+		case '-':
+			result = op2 - op1;
+			break;
+		case '*':
+			result = op1 * op2;
+			break;
+		case '/':
+			result = op2 / op1;
+			break;
+		case '^':
+			result = (int)Math.pow(op2,op1);
+			break;
+		}
+		return result;
+	}
+
+	public static int eval(String s) {
+		int result = 0;
+		Queue<Character> charsQ = new LinkedList<Character>();
+		for (char c : s.toCharArray()) {
+			charsQ.offer(c);
+		}
+
+		ArrayDeque<Integer> s1 = new ArrayDeque<Integer>();
+				
+		Iterator<Character>i = charsQ.iterator();
+		while(i.hasNext()) {
+			Character ch = i.next();
+				if(isNumber(ch)) {
+				s1.push(Integer.parseInt(ch+""));
+			  } else {
+				  if(!s1.isEmpty()) {
+				  	int op1 = s1.pop();
+					  int op2 = s1.pop();
+					  result = mathResult(op1,op2,ch);
+					  s1.push(result);
+				  } else {
+					  System.out.println("ERROR");
+				}
+			}
+		}
+		
+		result = s1.pop();
+		if(!s1.isEmpty()) {
+			System.out.println("ERROR - POSTFIXED IS WRONG");
+		}
+		return result;
+	}
