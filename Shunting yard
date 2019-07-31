@@ -1,4 +1,4 @@
-public static boolean isNumber(Character ch) {
+	public static boolean isNumber(Character ch) {
 		if(ch.equals('0') || ch.equals('1') || ch.equals('2') || ch.equals('3') || ch.equals('4') || ch.equals('5') || ch.equals('6') || ch.equals('7') || ch.equals('8') || ch.equals('9')) {
 			return true;
 		}
