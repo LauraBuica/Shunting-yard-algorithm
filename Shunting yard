@@ -62,17 +62,12 @@ public static boolean isNumber(Character ch) {
 
 			if(isNumber(ch)) {
 				postFixed.add(ch);
-				System.out.println("ch: " + ch);
+				System.out.println("POSTFIXED: " + ch);
 			} else if (isSimbol(ch)) {
-				if(stk.size() > 1) {
-					System.out.println(".");
-					char op1 = stk.pop();
-					char op2 = stk.pop();
-					while(isSimbol(op2) && !isLeftP(op2) && (isHigherPrec(op1) < isHigherPrec(op2) || isHigherPrec(op1) == isHigherPrec(op2)) && op2 != '^') {
-						postFixed.add(op1);
+					while(!stk.isEmpty() && !isLeftP(stk.peek()) && (isHigherPrec(stk.peek()) > isHigherPrec(ch) || isHigherPrec(stk.peek()) == isHigherPrec(ch)) && ch != '^') {
+						postFixed.add(stk.pop());
 					}
-				}
-
+				System.out.println("simbolul fara sa intre pe compare " + ch);
 				stk.push(ch);
 				System.out.println(" ch din simbol: "  + ch);
 			} else if (isLeftP(ch)) {
@@ -81,6 +76,7 @@ public static boolean isNumber(Character ch) {
 				while(!stk.isEmpty() && !isLeftP(stk.peek())) {
 					postFixed.add(stk.pop());
 				}
+				stk.pop();
 			}
 		}
 
@@ -98,4 +94,15 @@ public static boolean isNumber(Character ch) {
 		for(T ch1: ch) {
 			System.out.print(ch1 + " ");
 		}
+	}
+
+	public static <T> void afisare(Stack<T> ch) {
+		for(T ch1: ch) {
+			System.out.print(ch1 + " ");
+		}
+	}
+	
+	public static void main(String[] args) {
+
+		System.out.println(modify("3+(2+1)*2^3^2-8/(5-1*2/2)"));	
 	}
