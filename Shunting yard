@@ -50,26 +50,19 @@
 		for (char c : s.toCharArray()) {
 			charsQ.offer(c);
 		}
-
 		Stack<Character> stk = new Stack<Character>();
-
 		List<Character> postFixed = new ArrayList<Character>();
-		//iteratorul este pe coada - pe forma initiala a ecuatiei
 		Iterator<Character>i = charsQ.iterator();
 		
 		while(i.hasNext()) {
 			Character ch = i.next();
-
 			if(isNumber(ch)) {
 				postFixed.add(ch);
-				System.out.println("POSTFIXED: " + ch);
 			} else if (isSimbol(ch)) {
 					while(!stk.isEmpty() && !isLeftP(stk.peek()) && (isHigherPrec(stk.peek()) > isHigherPrec(ch) || isHigherPrec(stk.peek()) == isHigherPrec(ch)) && ch != '^') {
 						postFixed.add(stk.pop());
 					}
-				System.out.println("simbolul fara sa intre pe compare " + ch);
 				stk.push(ch);
-				System.out.println(" ch din simbol: "  + ch);
 			} else if (isLeftP(ch)) {
 				stk.push(ch);
 			} else {
@@ -86,14 +79,7 @@
 			}
 			postFixed.add(stk.pop());
 		}
-
 		return postFixed;
-	}
-
-	public static <T> void afisare(Stack<T> ch) {
-		for(T ch1: ch) {
-			System.out.print(ch1 + " ");
-		}
 	}
 
 	public static <T> void afisare(Stack<T> ch) {
